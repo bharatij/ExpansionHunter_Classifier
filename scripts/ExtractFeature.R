@@ -1,5 +1,6 @@
 #R code snippet to  extract details to create feature table
-#df is the datafram with EH genotypes for samples/loci to check
+#df is the datafram with EH genotypes for samples/loci to check with following columns extracted from the EH vcf file
+#chrom,start,end,RefCopy,RefUnit,SampleId,VARID,ReadType,Alleles,SpanningRead,FlankingRead,InRepeatRead,LocusCoverage,CI
 
 ###IRR
   df [,IRR_A1 := sapply(strsplit(as.character(InRepeatRead), "\\/"), '[', 1)]

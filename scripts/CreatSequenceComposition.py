@@ -14,23 +14,22 @@ import subprocess
 
 def parse_args():
     """Parse the input arguments, use '-h' for help"""
-    parser = argparse.ArgumentParser(description='Combine multiple TR lists from different sources for EH Catalog')
+    parser = argparse.ArgumentParser(description='Create sequence compostion metrics  EH TRs to use as feature for the classifier')
     parser.add_argument(
-        '--TRLists', type=str, nargs='+', required = True,
-        help='.List of files with TRs to check with classifier (tab delimited with columns chrom, start, end, motif)
+        '--TRLists', type=str, required = True,
+        help='.List of TRs to check with classifier (tab delimited with columns chrom, start, end, motif)')
     parser.add_argument(
         '--fasta', type=str, required = True,
         help='.Reference genome fasta file')
     parser.add_argument(
         '--out', type=str, default = 'SequenceComposition',
-        help='.Prefix for output file (prefix will be TRList) (default: %(default)s)')
+        help='.Prefix for output file (default: %(default)s)')
     return parser.parse_args()
-
 
 def parse_TRLists(filename):
     """Parse all TR list"""
     try:
-        trdf = pd.read_csv(filename, sep='\t' ,low_memory=False )
+        trdf = pd.read_csv(filename, sep='\t' ,low_memory=False,header=0 )
         trdf.columns = ['chrom', 'start', 'end', 'motif']
     except pd.io.common.EmptyDataError:
         sys.exit('ERROR: file {0} was empty.\n'.format(filename))
@@ -68,11 +67,11 @@ def main():
     print('Reading list of TR files.....')
     allStr = parse_TRLists(trfile)
     allStr = allStr.sort_values(by=['chrom', 'start'],ignore_index=True)
-  
+
     trBed = allStr[['chrom','start','end']]
     trBed = trBed.drop_duplicates()
     trBed.to_csv(inBed, sep= '\t', index = False, na_rep='NaN',header=False )
-        
+
     seqDf = getFastaSeq(fasta, inBed, outBed)
     allStrAnn = allStr.merge(seqDf, on=['chrom', 'start','end'])
     allStrAnn[['A']] = allStrAnn['Seq'].str.count('a|A')
@@ -81,10 +80,11 @@ def main():
     allStrAnn[['G']] = allStrAnn['Seq'].str.count('g|G')
     allStrAnn[['CG']] = (allStrAnn['C'] + allStrAnn['G'])/allStrAnn['Seq'].str.len()
 
-    allStrAnn = allStrAnn.assign( PerTRRefMotifMatch = allStrAnn.apply(lambda x: getRefPerMatch(x['Seq'],x['motif']), axis=1))
-    
+    allStrAnn = allStrAnn.assign(PerMotifMatch  = allStrAnn.apply(lambda x: getRefPerMatch(x['Seq'],x['motif']), axis=1))
+    allStrAnn = allStrAnn[['chrom','start','end','CG','PerMotifMatch']]
     fout =   base_filename + '.tsv'
     allStrAnn.to_csv(fout, sep= '\t', index = False, na_rep='NaN')
 
 if __name__ == '__main__':
     main()
+

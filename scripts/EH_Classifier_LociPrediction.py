@@ -27,35 +27,6 @@ def parse_args():
         help='Prefix for output file (default: %(default)s)')
     return parser.parse_args()
 
-
-#def PredictLabels(dname):
-#    print("Processing dataset ...." + dname)
-#    testdf = pd.read_csv(featureFile, sep='\t')
-#    testdf = testdf.merge(seqInfo[['chrom','start','end','CG','PerMotifMatch']], how='left')  
-#    testdf['CG'] = testdf['CG'].replace(np.nan, 0)
-#    testdf['PerMotifMatch'] = testdf['PerMotifMatch'].replace(np.nan, 0) 
-#    testdf['Ratio_IRR'] = (testdf['IRR_A1'] + 1)/(testdf['IRR_A2']+1)
-#    testdf['Ratio_SPR'] = (testdf['SPR_A1'] + 1)/(testdf['SPR_A2']+1)
-#    testdf['Ratio_FR'] = (testdf['FR_A1'] + 1)/(testdf['FR_A2']+1)
-#    testdf['MotifSize'] = testdf['RefUnit'].apply(lambda x: len(x))
-#    testdf['RefUnitInBP'] = testdf['RefCopy'] *  testdf['MotifSize']
-#    testdf['LongAllleleInBP'] = testdf['MotifSize'] *  testdf['LongAllele']
-#    conditions = [
-#        (testdf['LongAllele_Readtype'] == 'SPANNING'),
-#        (testdf['LongAllele_Readtype'] == 'INREPEAT')
-#        ]
-#    values = [testdf['LongAllele_SPR'], testdf['LongAllele_IRR']]
-#    testdf['LongAllele_IRR_SPR'] = np.select(conditions, values)
-#    testdf['RatioRefLongAllele'] = (testdf['RefUnitInBP'] )/(testdf['LongAllleleInBP'])
-#    testdf = testdf.reset_index()      
-#    testSet = testdf[['Ratio_FR','LongAllele_IRR_SPR','LongAllleleInBP','RefUnitInBP','PerMotifMatch','CG']]
-#    testPreds = model.predict(testSet)    
-#    res = testdf
-#    res['PredictedLabels'] = testPreds          
-#    fout= dname + '_ClassifierPredictions.tsv'
-#    res.to_csv(fout, sep= '\t', index = False, na_rep='NaN')
-#    return(print("Done Processing dataset ...." + dname))
-
 def main():
     args = parse_args()
     modelFile = args.model

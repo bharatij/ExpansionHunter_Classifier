@@ -5,7 +5,7 @@ Developed and tested with anaconda3. It should work with python >= 3.7
 
 ## 1. Extract Features from EH vcf file
 
-Use the R snippet to generate features from EH genotypes.
+Use the R script to generate features from EH genotypes table extracted from EH vcf file.
 
 ## 2. Calculate % of GC content and percentage of motif match with reference sequence
 

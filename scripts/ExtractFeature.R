@@ -1,7 +1,7 @@
 #R code snippet to  extract details to create feature table
 #df is the datafram with EH genotypes for samples/loci to check with following columns extracted from the EH vcf file
 #chrom,start,end,RefCopy,RefUnit,SampleId,VARID,ReadType,Alleles,SpanningRead,FlankingRead,InRepeatRead,LocusCoverage,CI
-
+df =  fread('EH_GenotypeTableToClassify.tsv', sep = "\t", header=T, check.names = F,nThread=8)
 ###IRR
   df [,IRR_A1 := sapply(strsplit(as.character(InRepeatRead), "\\/"), '[', 1)]
   df [,IRR_A2 := sapply(strsplit(as.character(InRepeatRead), "\\/"), '[', 2)]
@@ -52,7 +52,6 @@ if(chrom %in% c('chrX','chrY')){
         df[ ,':='(A1temp = NULL, A2temp = NULL)]
 }
 df= df[,.SD, .SDcols = !c('ReadType', 'InRepeatRead','SpanningRead','FlankingRead')]
-
-
+fwrite(df, file='EH_GenotypeFeaturesToUseWithClassifier.tsv', sep = "\t", quote = F, row.names = F,nThread=8)
 ####after running this code your table shold have following columns
 SampleId, VARID,chrom, start, end, RefCopy, RefUnit, LongAllele, IRR_A1, IRR_A2, SPR_A1, SPR_A2, FR_A1, FR_A2, LongAllele_Readtype, LongAllele_IRR, LongAllele_SPR, LongAllele_FR

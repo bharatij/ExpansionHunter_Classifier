@@ -5,7 +5,7 @@ Developed and tested with anaconda3. It should work with python >= 3.7
 
 ## 1. Extract Features from EH vcf file
 
-Use the R snippet 
+Use the R snippet to generate features from EH genotypes.
 
 ## 2. Calculate % of GC content and percentage of motif match with reference sequence
 
@@ -28,9 +28,9 @@ Classify list of Expansion Hunter Loci as True/False expansions
 
 optional arguments:
   -h, --help           show this help message and exit
-  --model MODEL        Trained model file
-  --seqInfo SEQINFO    Sequence composition metrics for the list of TRs to classify
-  --features FEATURES  EH genotype features extracted from EH vcf
+  --model MODEL        Trained model file 
+  --seqInfo SEQINFO    Sequence composition metrics for the list of TRs to classify  (generated in step2)
+  --features FEATURES  EH genotype features extracted from EH genotype table(generated step1)
   --out OUT            Prefix for output file (default: EH_Loci)
 
 

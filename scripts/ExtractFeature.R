@@ -26,31 +26,29 @@ df =  fread('EH_GenotypeTableToClassify.tsv', sep = "\t", header=T, check.names 
   df[,LongAllele_IRR := ifelse(!is.na(A2) & A1 <= A2, IRR_A2, IRR_A1)]
   df[,LongAllele_SPR := ifelse(!is.na(A2) & A1 <= A2, SPR_A2, SPR_A1)]
   df[,LongAllele_FR := ifelse(!is.na(A2) & A1 <= A2, FR_A2, FR_A1)]
-  change=which(df$chrom %in% c('chrX','chrY'))
+
+  df[,A1temp := A1]
+  df[,A2temp := A2]
+  df[is.na(A2), A2 := A1[is.na(A2)]]
+  df[is.na(A2temp),A1 := 0]
  
-if(chrom %in% c('chrX','chrY')){
-        df[,A1temp := A1]
-        df[,A2temp := A2]
-        df[is.na(A2), A2 := A1[is.na(A2)]]
-        df[is.na(A2temp),A1 := 0]
+  df[,A1temp := IRR_A1]
+  df[,A2temp := IRR_A2]
+  df[is.na(IRR_A2), IRR_A2 := IRR_A1[is.na(IRR_A2)]]
+  df[is.na(A2temp),IRR_A1 := 0]
  
-        df[,A1temp := IRR_A1]
-        df[,A2temp := IRR_A2]
-        df[is.na(IRR_A2), IRR_A2 := IRR_A1[is.na(IRR_A2)]]
-        df[is.na(A2temp),IRR_A1 := 0]
+  df[,A1temp := SPR_A1]
+  df[,A2temp := SPR_A2]
+  df[is.na(SPR_A2), SPR_A2 := SPR_A1[is.na(A2temp)]]
+  df[is.na(A2temp),SPR_A1 := 0]
  
-        df[,A1temp := SPR_A1]
-        df[,A2temp := SPR_A2]
-        df[is.na(SPR_A2), SPR_A2 := SPR_A1[is.na(A2temp)]]
-        df[is.na(A2temp),SPR_A1 := 0]
+  df[,A1temp := FR_A1]
+  df[,A2temp := FR_A2]
+  df[is.na(FR_A2),FR_A2 := FR_A1[is.na(A2temp)]]
+  df[is.na(A2temp),FR_A1 := 0]
  
-        df[,A1temp := FR_A1]
-        df[,A2temp := FR_A2]
-        df[is.na(FR_A2),FR_A2 := FR_A1[is.na(A2temp)]]
-        df[is.na(A2temp),FR_A1 := 0]
- 
-        df[ ,':='(A1temp = NULL, A2temp = NULL)]
-}
+  df[ ,':='(A1temp = NULL, A2temp = NULL)]
+
 df= df[,.SD, .SDcols = !c('ReadType', 'InRepeatRead','SpanningRead','FlankingRead')]
 fwrite(df, file='EH_GenotypeFeaturesToUseWithClassifier.tsv', sep = "\t", quote = F, row.names = F,nThread=8)
 ####after running this code your table shold have following columns

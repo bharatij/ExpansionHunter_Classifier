@@ -10,6 +10,7 @@ Use the R script to generate features from EH genotypes table extracted from EH 
 ## 2. Calculate % of GC content and percentage of motif match with reference sequence
 
 python ~/CreatSequenceComposition.py -h
+
 usage: CreatSequenceComposition.py [-h] --TRLists TRLISTS --fasta FASTA [--out OUT]
 
 optional arguments:
@@ -22,6 +23,7 @@ optional arguments:
 ## 3. Classify EH genotype as True/False expansions
 
 python ~/EH_Classifier_LociPrediction.py -h
+
 usage: EH_Classifier_LociPrediction.py [-h] --model MODEL --seqInfo SEQINFO --features FEATURES [--out OUT]
 
 Classify list of Expansion Hunter Loci as True/False expansions

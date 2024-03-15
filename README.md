@@ -36,4 +36,5 @@ optional arguments:
   --out OUT            Prefix for output file (default: EH_Loci)
 
 
+Cite the code: [![DOI](https://zenodo.org/badge/615451022.svg)](https://zenodo.org/doi/10.5281/zenodo.10821642)
 

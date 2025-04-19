@@ -22,7 +22,7 @@ optional arguments:
 
 
 ## 3. Classify the EH genotype as True/False expansions
-### NOTE: Uploaded the Random Forest classifier model trained using Python v3.12. If you are using Python v3.7, use EHClassifier_TrainedModel_pythonV3.7.pkl model and with Python v3.10 and up use EHClassifier_TrainedModel_pythonV3.10andUp.pkl
+##### NOTE: Added Random Forest classifier model trained using Python v3.12. If you are using Python v3.7, use EHClassifier_TrainedModel_pythonV3.7.pkl model and with Python v3.10 and up use EHClassifier_TrainedModel_pythonV3.10andUp.pkl
 
 python ~/EH_Classifier_LociPrediction.py -h
 

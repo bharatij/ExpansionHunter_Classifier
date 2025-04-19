@@ -74,8 +74,8 @@ Example using Random Forest model trained with Python v3.12
 
 python EH_Classifier_LociPrediction.py --model EHClassifier_TrainedModel_pythonV3.10andUp.pkl \
 --seqInfo variant_catalog_hg38_SequenceComposition.tsv \
---features EH_GenotypeFeaturesToUseWithClassifier.tsv \
---out EH_GT_SampleTRsToCheck
+--features AllSamples_AllTRs_GT_SampleTRs_FeaturesToUseWithClassifier.tsv \
+--out AllSamples_AllTRs_GT_SampleTRs
 
 ### File Format
 #### Input
@@ -84,7 +84,7 @@ python EH_Classifier_LociPrediction.py --model EHClassifier_TrainedModel_pythonV
 3) Sequence composition file generated for the list of TRs included in the EH catalog in Step2
 
 #### Output
-The output file containing the column "PredictedLabels" with prediction labeled as T (True) and F (False)
+The output file with ClassifierPredictions.tsv suffix containing the column "PredictedLabels" with prediction labeled as T (True) and F (False)
 
 Cite the code: [![DOI](https://zenodo.org/badge/615451022.svg)](https://zenodo.org/doi/10.5281/zenodo.10821642)
 

@@ -1,11 +1,14 @@
-#R code snippet to  extract details to create feature table
-#df is the datafram with EH genotypes for samples/loci to check with following columns extracted from the EH vcf file
-#chrom,start,end,RefCopy,RefUnit,SampleId,VARID,ReadType,Alleles,SpanningRead,FlankingRead,InRepeatRead,LocusCoverage,CI
+#R code to  extract details to create a feature table
+#df is the dataframe with EH genotypes for samples/loci to check with the following columns extracted from the EH VCF file
+#chrom, start, end, RefCopy, RefUnit, SampleId, VARID, ReadType, Alleles, SpanningRead, FlankingRead, InRepeatRead, LocusCoverage, CI
 
 library(tidyverse)
 library(data.table)
-
-df =  fread('EH_GenotypeTableToClassify.tsv', sep = "\t", header=T, check.names = F,nThread=8)
+###EH genotype table in tsv format
+df =  fread('EH_GenotypeTable.tsv', sep = "\t", header=T, check.names = F,nThread=8)
+### List of samples and Loci to check with the classifier containing two columns: SampleId, VARID
+expdf = fread('SampleLociListToClassify.tsv', sep='\t', header=T)
+df = merge(df, expdf, by=c('SampleId','VARID'))
 ###Alleles
 df [,A1 := sapply(strsplit(as.character(Alleles), "\\/"), '[', 1)]
 df [,A2 := sapply(strsplit(as.character(Alleles), "\\/"), '[', 2)]
@@ -62,5 +65,5 @@ df[,LongAllele :=  pmax(A1,A2, na.rm = T )]
 
 df= df[,.SD, .SDcols = c( 'chrom', 'start', 'end', 'RefCopy', 'RefUnit','VARID','SampleId','LongAllele', 'IRR_A1', 'IRR_A2', 'SPR_A1', 'SPR_A2', 'FR_A1', 'FR_A2', 'LongAllele_Readtype', 'LongAllele_IRR', 'LongAllele_SPR', 'LongAllele_FR')]
 fwrite(df, file='EH_GenotypeFeaturesToUseWithClassifier.tsv', sep = "\t", quote = F, row.names = F,nThread=8)
-####after running this code your table shold have following columns
-SampleId, VARID,chrom, start, end, RefCopy, RefUnit, LongAllele, IRR_A1, IRR_A2, SPR_A1, SPR_A2, FR_A1, FR_A2, LongAllele_Readtype, LongAllele_IRR, LongAllele_SPR, LongAllele_FR
+#### After running this code, your table should have the following columns
+# SampleId, VARID,chrom, start, end, RefCopy, RefUnit, LongAllele, IRR_A1, IRR_A2, SPR_A1, SPR_A2, FR_A1, FR_A2, LongAllele_Readtype, LongAllele_IRR, LongAllele_SPR, LongAllele_FR
